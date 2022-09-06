@@ -1,0 +1,31 @@
+{
+  "name": "contact-cards",
+  "version": "1.0.0",
+  "description": "Progressive Web Application",
+  "private": true,
+  "scripts": {
+    "heroku-prebuild": "npm install --dev",
+    "start:dev": "concurrently \"cd server && npm run server\" \"cd client && npm run dev\"",
+    "start": "cd server && node server.js",
+    "server": "cd server node server.js --ignore client",
+    "build": "cd client && npm run build",
+    "install": "concurrently \"cd client && npm install\" \"cd server && npm install\" ",
+    "client": "cd client && npm start"
+  },
+  "engines": {
+    "node": "16.15.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nrenner0211/contact-card.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nrenner0211/contact-card/issues"
+  },
+  "homepage": "https://github.com/nrenner0211/contact-card#readme",
+  "dependencies": {
+    "concurrently": "^7.3.0"
+  }
+}
