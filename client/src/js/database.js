@@ -2,29 +2,31 @@ import { openDB } from 'idb';
 import 'regenerator-runtime/runtime';
 
 export const initdb = async () =>
-
+// We are creating a new database named 'contact_db' which will be using version 1 of the database.
   openDB('contact_db', 1, {
-    
+    // Add our database schema if it has not already been initialized.
     upgrade(db) {
       if (db.objectStoreNames.contains('contacts')) {
         console.log('contacts store already exists');
         return;
       }
-      
+      // Create a new object store for the data and give it an key name of 'id' which needs to increment automatically.
       db.createObjectStore('contacts', { keyPath: 'id', autoIncrement: true });
       console.log('contacts store created');
-    }
+    },
   });
 
+// Exported READ function
 
 // Export a function we will use to GET to the database.
 export const getDb = async () => {
   console.log('GET from the database');
 
+  // Create a connection to the database database and version we want to use.
   const contactDb = await openDB('contact_db', 1);
 
-
-  const tx = contactDb.transaction('contacts', 'readonly');
+  // Create a new transaction and specify the database and data privileges.
+  const tx = contactDb.transaction('contact_db', 'readonly');
 
   // Open up the desired object store.
   const store = tx.objectStore('contacts');
@@ -47,8 +49,8 @@ export const postDb = async (name, email, phone, profile)  => {
   // Create a connection to the database database and version we want to use.
   const contactDb = await openDB('contact_db', 1);
 
-  // Create a new transaction and specify the store and data privileges.
-  const tx = contactDb.transaction('contacts', 'readwrite');
+  // Create a new transaction and specify the database and data privileges.
+  const tx = contactDb.transaction('contact_db', 'readwrite');
 
   // Open up the desired object store.
   const store = tx.objectStore('contacts');
@@ -59,6 +61,7 @@ export const postDb = async (name, email, phone, profile)  => {
   // Get confirmation of the request.
   const result = await request;
   console.log('🚀 - data saved to the database', result);
+
 };
 
 // EXPORTED DELETE function
@@ -69,8 +72,8 @@ export const deleteDb = async (id) => {
   // Create a connection to the database database and version we want to use.
   const contactDb = await openDB('contact_db', 1);
 
-  // Create a new transaction and specify the store and data privileges.
-  const tx = contactDb.transaction('contacts', 'readwrite');
+  // Create a new transaction and specify the database and data privileges.
+  const tx = contactDb.transaction('contact_db', 'readwrite');
 
   // Open up the desired object store.
   const store = tx.objectStore('contacts');
@@ -90,7 +93,7 @@ export const editDb = async (id, name, email, phone, profile) => {
 
   const contactDb = await openDB('contact_db', 1);
 
-  const tx = contactDb.transaction('contacts', 'readwrite');
+  const tx = contactDb.transaction('contact_db', 'readwrite');
 
   const store = tx.objectStore('contacts');
   
